@@ -1513,6 +1513,7 @@ int parse_defs(void)
         }
         c = tokenstr[tokenlen];
         tokenstr[tokenlen] = '\0';
+        emit_zone(tokenstr);
         emit_idfunc(func_tag, type, tokenstr);
         emit_def(tokenstr, 1);
         tokenstr[tokenlen] = c;
@@ -1554,6 +1555,7 @@ int parse_defs(void)
             emit_const(0);
             emit_leave();
         }
+        emit_zone(NULL);
         return (1);
     }
     else if (scantoken == ASM_TOKEN)
@@ -1589,6 +1591,7 @@ int parse_defs(void)
         }
         c = tokenstr[tokenlen];
         tokenstr[tokenlen] = '\0';
+        emit_zone(tokenstr);
         emit_idfunc(func_tag, type, tokenstr);
         emit_def(tokenstr, 0);
         tokenstr[tokenlen] = c;
@@ -1622,6 +1625,7 @@ int parse_defs(void)
             }
         }
         while (scantoken != END_TOKEN);
+        emit_zone(NULL);
         return (1);
     }
     if (scantoken == EOL_TOKEN || scantoken == COMMENT_TOKEN)

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdint.h>
 #include "tokens.h"
 #include "lex.h"
 #include "symbols.h"
@@ -431,6 +432,11 @@ void emit_bytecode_seg(void)
 void emit_comment(char *s)
 {
     printf("\t\t\t\t\t; %s\n", s);
+}
+void emit_zone(char *s)
+{
+    if (global_flags & USE_ZONES)
+        printf("\t!ZONE\t%s\n", s ? s : "__main__");
 }
 void emit_asm(char *s)
 {

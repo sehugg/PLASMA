@@ -1,5 +1,7 @@
 #define ACME   1
 #define MODULE 2
+#define USE_ZONES 4
+extern int global_flags;
 void emit_flags(int flags);
 void emit_header(void);
 void emit_trailer(void);
@@ -58,3 +60,4 @@ void emit_enter(int cparams);
 void emit_start(void);
 void emit_rld(void);
 void emit_esd(void);
+void emit_zone(char* name);

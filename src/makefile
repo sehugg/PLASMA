@@ -74,7 +74,19 @@ clean:
 # PLASMA compiler: plasm
 #
 $(PLASM): $(OBJS) $(INCS)
-	cc $(OBJS) -o $(PLASM)
+	$(CC) $(OBJS) -o $(PLASM)
+
+# Emscripten target (see https://github.com/apiaryio/emscripten-docker)
+plasm.js:
+	docker run --rm -v $(shell pwd):/src -e USERID=`id -u` -t apiaryio/emcc emmake make $(PLASM)
+	docker run --rm -v $(shell pwd):/src -e USERID=`id -u` -t apiaryio/emcc emcc -v -O2 --memory-init-file 0 \
+		-s ASM_JS=1 \
+		-s MODULARIZE=1 \
+		-s EXPORT_NAME=\"'PLASM'\" \
+		-s FORCE_FILESYSTEM=1 \
+		-s 'EXTRA_EXPORTED_RUNTIME_METHODS=["FS"]' \
+		-s NO_EXIT_RUNTIME=1 toolsrc/*.o toolsrc/plasm.c -o $@ \
+		#--embed-file vmsrc/plvmzp.inc
 
 #
 # PLASMA VMs
